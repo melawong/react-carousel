@@ -12,7 +12,7 @@ it("matches snapshot", function () {
   expect(container).toMatchSnapshot();
 });
 
-it("works when you click on the right arrow", function() {
+it("works when you click on the right arrow", function () {
   const { container } = render(
     <Carousel
       photos={TEST_IMAGES}
@@ -38,10 +38,15 @@ it("works when you click on the right arrow", function() {
   expect(
     container.querySelector('img[alt="testing image 2"]')
   ).toBeInTheDocument();
+//TODO: create new it block to check hidden arrows for left and right arrow. 
+  // move forward in the carousel to image 3
+  fireEvent.click(rightArrow);
 
+  //on image 3: expect right arrow to not show
+  expect(rightArrow).not.toBeInTheDocument();
 });
 
-it("works when you click on the left arrow", function() {
+it("works when you click on the left arrow", function () {
   const { container } = render(
     <Carousel
       photos={TEST_IMAGES}
@@ -49,11 +54,9 @@ it("works when you click on the left arrow", function() {
     />
   );
 
-
   //move forward to second image for testing purposes
   const rightArrow = container.querySelector(".fa-chevron-circle-right");
-  fireEvent.click(rightArrow)
-
+  fireEvent.click(rightArrow);
 
   // move backward in the carousel
   const leftArrow = container.querySelector(".fa-chevron-circle-left");
@@ -62,13 +65,15 @@ it("works when you click on the left arrow", function() {
   /** when starting on second image,
    * after click: expect only the first image to show */
   expect(
-    container.querySelector('img[alt="testing image 3"]')
-  ).not.toBeInTheDocument();
-  expect(
     container.querySelector('img[alt="testing image 1"]')
   ).toBeInTheDocument();
   expect(
     container.querySelector('img[alt="testing image 2"]')
   ).not.toBeInTheDocument();
+  expect(
+    container.querySelector('img[alt="testing image 3"]')
+  ).not.toBeInTheDocument();
 
+  //on image 1: expect left arrow to not show
+  expect(leftArrow).not.toBeInTheDocument();
 });
